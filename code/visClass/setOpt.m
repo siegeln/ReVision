@@ -1,7 +1,8 @@
 %% Global Parameters
 % Set the below directory to the root of the image corpus with
 % subdirectories for each image category (see below)
-IMAGES_ROOT = '../../corpus/';
+%IMAGES_ROOT = '../../corpus/';
+IMAGES_ROOT = '~/data/cleanedZachClassData/63KTRAINVAL/train/';
 
 % Download the VLFeat library binaries: http://www.vlfeat.org/download.html
 % then extract and set VLFEATROOT to point to extracted location
@@ -28,7 +29,8 @@ opt.subdivisionLevels = 1;
 opt.addIs3Dtag = false;
 
 opt.baseDir = IMAGES_ROOT;
-opt.catDirs = {'bar', 'bar3D','lines', 'lines3D', 'pie', 'pie3D', 'scatter','scatter3D', 'surface3D'};
+opt.catDirs = arrayfun(@num2str, 0:6, 'UniformOutput', false);
+%opt.catDirs = {'bar', 'bar3D','lines', 'lines3D', 'pie', 'pie3D', 'scatter','scatter3D', 'surface3D'};
 % opt.catDirs = {'bar','lines','pie', 'scatter'};
 % opt.catDirs = {'bar','pie'};
 % opt.baseDir = 'C:\code\VisInterp\imagesNew\';

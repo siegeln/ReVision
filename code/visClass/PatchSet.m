@@ -94,20 +94,30 @@ classdef PatchSet < handle
             rf = p.rfSize;
             i=1;
             trials=0;
+            circularIncrement = @(x) mod(x-1,size(data,1))+1;
+            index=1;
+            nAttempts=0;
             while (i <= p.N)
                 if (mod(trials,10000) == 0)
                     fprintf('%d / %d patches accepted.\n', i, p.N);
                 end
-                
+                if nAttempts > 100
+                    % If we can't find a sufficiently high variance patch,
+                    % there might not be any, so move on to the next image
+                    nAttempts = 0;
+                    index = circularIncrement(index);
+                end
                 r = random('unid', nx - rf + 1);
                 c = random('unid', ny - rf + 1);
-                index = mod(i-1,size(data,1))+1;
+                %index = mod(i-1,size(data,1))+1;
                 patch = reshape(data(index, :), [nx ny nc]);
                 patch = patch( r:r+rf-1 , c:c+rf-1 , : );
                 if (var(patch(:)) > p.MIN_PATCH_VAR)
                     A(i,:) = patch(:)';
                     L(i) = labels(index);
                     i = i + 1;
+                    index = circularIncrement(index);
+                    nAttempts = 0;
                 end
                 trials = trials + 1;
             end

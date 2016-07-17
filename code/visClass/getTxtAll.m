@@ -1,6 +1,6 @@
 %% Set Range
 
-clear;
+%clear;
 setOpt;
 
 rfs = 6;%5:1:20;
@@ -8,7 +8,7 @@ DIMS = 128;%[64 128 256];
 
 %rfd = combvec(rfs,DIMS)
 % combvec requires neural network toolbox so do it manually instead
-rfd = zeros(2,length(rfs)*length(DIMS));
+rfd = nan(2,length(rfs)*length(DIMS));
 for n = 1:length(rfs)
     for m = 1:length(DIMS)
         rfd(:,n+length(rfs)*(m-1)) = [rfs(n); DIMS(m)];
@@ -85,6 +85,9 @@ end
     filename = strcat(prefix, setName, '.arff');
     data.featuresToARFF(filename, X, Y, setName, featureNames);
     fprintf('Saved to %s\n', filename);
+
+    %% Save feature matrix and patch set
+    save revisionFeats X Y ps fs;
 end
 
 totalTime = toc;
